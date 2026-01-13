@@ -14,3 +14,7 @@ Update:
 
 Delete:
 * The users can also delete their posts if they are not satisfied with their blog.
+---------------------------------------------------------------------------
+
+Note:
+* This update also includes password hashing which provides high security for the accounts.
