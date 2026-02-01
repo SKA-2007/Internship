@@ -12,6 +12,6 @@ create table if not exists users (
 create table if not exists posts (
     ID int auto_increment primary key,
     Title varchar(255) not null,
-    content text not null,
+    Content text not null,
     created_at timestamp default current_timestamp
 );
