@@ -9,14 +9,14 @@ $like = "%$search%";
 if ($search)
 {
     $stmt = $conn->prepare("select SQL_CALC_FOUND_ROWS * from posts
-        where Title like ? or content like ?
-        order by created_at desc limit ?, ?");
+        where Title like ? or Content like ?
+        order by Created_at desc limit ?, ?");
     $stmt->bind_param("ssii", $like, $like, $offset, $limit);
 }
 else
 {
     $stmt = $conn->prepare("select SQL_CALC_FOUND_ROWS * from posts
-        order by created_at desc limit ?, ?");
+        order by Created_at desc limit ?, ?");
     $stmt->bind_param("ii",$offset, $limit);
 }
 $stmt->execute();
@@ -39,6 +39,7 @@ $totalPages = ceil($totalRows / $limit);
             box-sizing: border-box;
         }
         body{
+            width: 100%;
             min-height: 100vh;
             background-image: url("images/BG2.jpeg");
             background-repeat: no-repeat;
@@ -55,15 +56,15 @@ $totalPages = ceil($totalRows / $limit);
             left: 100px;
         }
         .input-group{
-            width: 100%;
-            max-width: 700px;
+            max-width: 100%;
+            width: 700px;
             background: white;
             display: flex;
             align-items: center;
             border-radius: 60px;
             padding: 10px 20px;
             backdrop-filter: blur(4px) saturate(180%);
-            transform: translate(150%,70%);
+            margin: 2% 0 0 70%;
         }
         .input-group input{
             background: transparent;
@@ -79,12 +80,15 @@ $totalPages = ceil($totalRows / $limit);
         }
         .input-group button img{
             width: 25px;
+            max-width: 100%;
         }
         .input-group button{
             border: 0;
             border-radius: 50%;
             width: 60px;
+            max-width: 100%;
             height: 60px;
+            max-height: 100%;
             background: #58629b;
             cursor: pointer;
         }
@@ -93,24 +97,26 @@ $totalPages = ceil($totalRows / $limit);
         }
         .alert-warning{
             color: red;
-            font-size: 20px;
             padding: 16px;
-            transform: translate(130%,40%);
             font-size: 30px;
+            transform: translate(-50%,20%);
         }
         .card .card-body{
-            width: 1200px;
+            width: 1111px;
+            max-width: 100%;
             background: lightgrey;
             border: 4px solid purple;
             border-radius: 12px;
             padding: 16px;
-            margin:12px 0;
-            font-size: 26px;
-            transform: translate(-20%,90%);
+            font-size: 150%;
+            margin-top: 50px;
+            transform: translate(-40%,50%);
         }
         .card .card-body .btn{
             width: 120px;
+            max-width: 100%;
             height:34px;
+            max-height: 100%;
             border: none;
             outline: none;
             background: #b83030;
@@ -126,14 +132,13 @@ $totalPages = ceil($totalRows / $limit);
         }
         .btn1{
             text-decoration: none;
-            color: lightblue;
-            font-size: 25px;
+            color: white;
             background: blue;
             border-radius: 4px;
-            padding: 10px;
+            padding: 8px 12px;
+            font-size: 16px;
             position: relative;
-            left: 1500px;
-            top: 2px;
+            left: 1400px;
         }
         .btn1:hover{
             opacity: .7;
@@ -141,12 +146,13 @@ $totalPages = ceil($totalRows / $limit);
         .btn2{
             text-decoration: none;
             color: white;
-            font-size: 23px;
-            background: Red;
+            background: red;
             border-radius: 4px;
-            padding: 10px;
+            padding: 8px 12px;
+            font-size: 15px;
             position: relative;
-            left: 1525px;
+            left: 1530px;
+            bottom: 20px;
         }
         .btn2:hover{
             opacity: .7;
@@ -157,7 +163,7 @@ $totalPages = ceil($totalRows / $limit);
             font-size: 23px;
             background: darkgrey;
             border-radius: 4px;
-            padding: 10px;
+            padding: 8px 12px;
         }
         .btn3:hover{
             opacity: .7;
@@ -186,8 +192,8 @@ $totalPages = ceil($totalRows / $limit);
             <div class="card mb-3">
                 <div class="card-body">
                 <h3><?= htmlspecialchars($p['Title']) ?></h3>
-                <p><?= nl2br(htmlspecialchars($p['content'])) ?></p>
-                <small class="text-muted"><?= $p['created_at'] ?></small><br>
+                <p><?= nl2br(htmlspecialchars($p['Content'])) ?></p>
+                <small class="text-muted"><?= $p['Created_at'] ?></small><br>
                 <div style="margin-top:8px;">
                     <a class="btn3" href="edit.php?ID=<?= $p["ID"] ?>">Edit</a>
                     <form action="delete.php" method="POST" style="display:inline;">

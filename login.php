@@ -101,7 +101,6 @@ $registered = isset($_GET['registered']);
 </head>
 <body>
     <div class="container">
-        <?php if ($error): ?><div class="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
         <form method="POST">
             <h1>Login</h1>
             <div class="form-group">
@@ -114,6 +113,7 @@ $registered = isset($_GET['registered']);
             </div>
             <button class="btn btn-primary" type="submit">Login</button>
             <nav><a class="link" href="register.php">Don't have an account? Create one!</a></nav>
+            <?php if ($error): ?><div class="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
             <?php if ($registered): ?><div class="alert">Registration Successful! Please Login.</div><?php endif; ?>
         </form>
     </div>
