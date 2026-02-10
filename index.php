@@ -167,6 +167,38 @@ $totalPages = ceil($totalRows / $limit);
         .btn3:hover{
             opacity: .7;
         }
+        .my-pigmentation-container{
+            contain: style layout;
+        }
+        .my-pagination-container .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .my-pagination-container .page-item .page-link {
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            margin: 0 2px;
+            text-decoration: none;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+        }
+
+        .my-pagination-container .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .my-pagination-container .page-item:not(.active) .page-link:hover {
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
     </style>
 </head>
 
@@ -202,15 +234,19 @@ $totalPages = ceil($totalRows / $limit);
                 </div>
             </div>
         <?php endforeach; ?>
-        <nav>
-            <ul class = "pagination">
-                <?php for ($i = 1; $i <$totalPages; $i++): ?>
-                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>&search=<?= urlencode($search) ?>"><?= $i ?></a>
-                    </li>
-                <?php endfor; ?>
-            </ul>
-        </nav>
+        <div class="my-pigmentation-container">
+            <nav aria-label="Page navigation">
+                <ul class = "pagination">
+                    <div style="padding: 20px; margin: 20px; position: relative; top: 50px;">
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <a href="?page=<?= $i ?>" style="display: inline-block; padding: 10px; margin: 5px; background: violet; color: black; text-decoration: none; font-size: 20px; font-weight: bold; border: none;">
+                                <?= $i ?>
+                            </a>
+                        <?php endfor; ?>
+                    </div>
+                </ul>
+            </nav>
+        </div>
     <?php endif; ?>
 </body>
 
