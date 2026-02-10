@@ -36,11 +36,10 @@ $registered = isset($_GET['registered']);
         }
         body{
             min-height: 100vh;
-            background-image: url("images/BG2.jpeg");
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;
-            background-color: #1215dd;
+            background-color: #25279b;
             display: flex;
             font-family: Tahoma;
         }

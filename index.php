@@ -41,11 +41,10 @@ $totalPages = ceil($totalRows / $limit);
         body{
             width: 100%;
             min-height: 100vh;
-            background-image: url("images/BG2.jpeg");
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;
-            background-color: #1215dd;
+            background-color: #25279b;
             display: flex;
             font-family: Tahoma;
         }
@@ -133,7 +132,7 @@ $totalPages = ceil($totalRows / $limit);
         .btn1{
             text-decoration: none;
             color: white;
-            background: blue;
+            background: purple;
             border-radius: 4px;
             padding: 8px 12px;
             font-size: 16px;
