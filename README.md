@@ -1,20 +1,51 @@
-What's New:
+Blog System: Final Relase
+---------------------------------------------------------------------------------------------------------------------------------------
 
-This release introduces security improvements , form validations and user roles.
+A PHP & MySQL based blog with user roles (Admin, Editor, User), authentication, CRUD operations, profile management, and responsive UI.
 
----------------------------------------------------------------------------------
-# Security Improvements
+---------------------------------------------------------------------------------------------------------------------------------------
 
-This project includes security enhancements to protect the application from common web vulnerabilities and to improve data integrity and access control.
+Features
+🔑 Authentication (login with username or mobile + password)
+👤 Roles: Admin, Editor, User
+Admin: Manage all posts & users
+Editor: Add/edit/delete own posts (created by Admin)
+User: View posts only, manage own account
+📂 Account management (update username, name, mobile, password, profile pic)
+📝 CRUD operations for posts
+🔍 Search & pagination
+🔒 Secure with prepared statements, password hashing
+🎨 Responsive UI
 
-### 1. Prepared Statements
-- Used MySQLi to implement prepared statements for all database queries to prevent SQL injection attacks.
+---------------------------------------------------------------------------------------------------------------------------------------
 
-### 2. Form Validation
-- Implemented Server-side validation: validation for all forms to ensure data integrity.
-- Implemented Client-side validation: client-side validation for an enhanced user experience.
+Deployment (XAMPP):
+Install XAMPP and start Apache & MySQL.
 
-### 3. User Roles and Permissions
-- Extended the user table to include roles (e.g., admin, editor).
-- Implemented role-based access control for different parts of the application.
-------------------------------------------------------------------------------------
+Extract Project:
+Copy project folder into C:/xampp/htdocs/blog.
+
+Create Database:
+Open http://localhost/phpmyadmin/
+Create DB blog
+Import database.sql (included)
+Configure DB
+Edit config.php if your MySQL credentials differ.
+
+Login:
+Visit http://localhost/Intenship/
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Demo Accounts
+Admin → SKA / SKA@2026
+Editor → Editor1 / Editor@2026
+Editor → Editor2 / Editor@2026
+User → User1 / User@2026
+User → User2 / User@2026
+
+Roles
+Admin creates Editors.
+Users register themselves.
+
+---------------------------------------------------------------------------------------------------------------------------------------
