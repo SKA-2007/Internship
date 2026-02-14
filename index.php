@@ -46,6 +46,7 @@ $totalPages = ceil($totalRows / $limit);
         body{
             width: 100%;
             min-height: 100vh;
+            background-image: url("images/BG.jpeg");
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;

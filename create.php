@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $v_error == 0)
         }
         body{
             min-height: 100vh;
+            background-image: url("images/BG.jpeg");
             background-repeat: no-repeat;
             background-size: cover;
             background-attachment: fixed;
