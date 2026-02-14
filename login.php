@@ -1,6 +1,7 @@
 <?php
 require 'config.php';
 $error = "";
+$v_error = 0;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $username = trim($_POST['Username'] ?? '');
@@ -10,15 +11,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
-    if ($user && password_verify($password, $user['Password']))
-    {
-        $_SESSION['Username'] = $user['Username'];
-        $_SESSION['User_id'] = $user["ID"];
-        header("Location: index.php");
-        exit;
+    if (empty($username)){
+        $n_error = "Please Enter the Username.";
+        $v_error = 1;
     }
-    else
-        $error = "Invalid Username or Password!";
+    if (empty($password)){
+        $p_error = "Please Enter the Password.";
+        $v_error = 1;
+    }
+    if ($v_error == 0){
+        if ($user && password_verify($password, $user['Password']))
+        {
+            $_SESSION['Username'] = $user['Username'];
+            $_SESSION['User_id'] = $user["ID"];
+            header("Location: index.php");
+            exit;
+        }
+        else
+            $error = "Invalid Username or Password!";
+    }
 }
 $registered = isset($_GET['registered']);
 ?>
@@ -96,6 +107,11 @@ $registered = isset($_GET['registered']);
             text-decoration: none;
             color: rgba(24, 137, 250, 0.93)
         }
+        .text-danger{
+            color: darkred;
+            position: relative;
+            bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -104,11 +120,13 @@ $registered = isset($_GET['registered']);
             <h1>Login</h1>
             <div class="form-group">
                 <label>Username:</label>
-                <input type="text" class="form-control" name="Username" required>
+                <input type="text" class="form-control" name="Username">
+                <span class="text-danger"><?php if(!empty($n_error)) echo $n_error?></span>
             </div>
             <div class="form-group">
                 <label>Password:</label>
-                <input type="password" class="form-control" name="password" required>
+                <input type="password" class="form-control" name="password">
+                <span class="text-danger"><?php if(!empty($p_error)) echo $p_error?></span>
             </div>
             <button class="btn btn-primary" type="submit">Login</button>
             <nav><a class="link" href="register.php">Don't have an account? Create one!</a></nav>

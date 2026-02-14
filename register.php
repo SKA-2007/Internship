@@ -1,24 +1,33 @@
 <?php
 require 'config.php';
 $error = "";
+$v_error = 0;
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $username = trim($_POST['Username'] ?? '');
+    $name = trim($_POST['Name'] ?? '');
+    $mobile = $_POST['mobile'] ?? '';
     $password = $_POST['password'] ?? '';
-    if ($username === '' || $password === '')
-        $error = "All fields are required!";
-    else
-    {
+    $role = $_POST['role'] ?? '';
+    if (empty($username)){
+        $n_error = "Please Enter the Username.";
+        $v_error = 1;
+    }
+    if (empty($password)){
+        $p_error = "Please Enter the Password.";
+        $v_error = 1;
+    }
+    if(empty($role)) $role = 'user';
+    if ($v_error === 0){
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("insert into users (Username, Password) values (?, ?)");
-        $stmt->bind_param("ss", $username, $hash);
+        $stmt = $conn->prepare("insert into users (Username, Password, Role) values (?, ?, ?)");
+        $stmt->bind_param("sss", $username, $hash, $role);
         if ($stmt->execute())
         {
             header("Location: login.php?registered=1");
             exit;
         }
-        else
-            $error = "Username may already exist.";
+        else $error = "Username may already exist.";
     }
 }
 ?>
@@ -93,21 +102,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             text-decoration: none;
             color: rgba(24, 137, 250, 0.93)
         }       
+        .text-danger{
+            color: darkred;
+            position: relative;
+            bottom: 15px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <?php if ($error): ?><div class="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
-        <form method="POST">
+        <form method="POST" onsubmit="return validateForm()">
             <h1>Register</h1>
-            <label>Username</label>
-            <input type="text" class="form-control" name="Username" required>
-            <label>Password</label>
-            <input type="password" class="form-control" name="password" required>
-            <button class ="btn btn-primary" type="submit">Create Account</button>
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" class="form-control" name="Username" minlength="3" id="username" onblur="checkUser()">
+                <span class="text-danger"><?php if(!empty($n_error)) echo $n_error?></span>
+                <span class="text-danger" id="n_error"></span>
+            </div>        
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" class="form-control" name="password" minlength="6" id="pass" onblur="checkPass()">
+                <span class="text-danger"><?php if(!empty($p_error)) echo $p_error?></span>
+                <span class="text-danger" id="p_error"></span>
+            </div>
+            <div class="form-group">
+                <label>Role:</label>
+                <input type="text" class="form-control" name="role">        
+            </div>
+            <button class ="btn btn-primary" type="submit" name="submit">Create Account</button>
             <nav><a class="link" href="login.php">Already have an account? Login.</a></nav>
         </form>
+        <script>
+            function checkUser() {
+                var user = document.getElementById("username").value;
+                var error = document.getElementById("n_error");
+                if (user.length < 3) {
+                    error.textContent = "The Username Must be Atleast 3 Characters.";
+                    return false;
+                }
+                error.textContent = "";
+                return true;
+            }
+            function checkPass() {
+                var user = document.getElementById("pass").value;
+                var error = document.getElementById("p_error");
+                if (user.length < 8) {
+                    error.textContent = "The Password Must be Atleast 8 Chracters.";
+                    return false;
+                }
+                error.textContent = "";
+                return true;
+            }
+        </script>
     </div>
 </body>
 

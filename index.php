@@ -1,11 +1,16 @@
 <?php
-require 'config.php';
+require_once 'config.php';
 require_login();
 $search = trim($_GET['search'] ?? '');
 $page = max(1, intval($_GET['page'] ?? 1));
 $limit = 5;
 $offset = ($page - 1) * $limit;
 $like = "%$search%";
+$sql = "select  * from users";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$res = $stmt->get_result();
+$users = $res->fetch_all(MYSQLI_ASSOC);
 if ($search)
 {
     $stmt = $conn->prepare("select SQL_CALC_FOUND_ROWS * from posts
@@ -220,24 +225,29 @@ $totalPages = ceil($totalRows / $limit);
         <div class = "alert-warning">No posts found!</div>
     <?php else: ?>
         <?php foreach ($posts as $p): ?>
-            <div class="card mb-3">
-                <div class="card-body">
-                <h3><?= htmlspecialchars($p['Title']) ?></h3>
-                <p><?= nl2br(htmlspecialchars($p['Content'])) ?></p>
-                <small class="text-muted"><?= $p['Created_at'] ?></small><br>
-                <div style="margin-top:8px;">
-                    <a class="btn3" href="edit.php?ID=<?= $p["ID"] ?>">Edit</a>
-                    <form action="delete.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="ID" value="<?= $p['ID'] ?>">
-                        <button class="btn btn-danger" type="submit" onclick="return confirm('Delete this Post?');">Delete</button>
-                    </form>
-                </div>
-            </div>
+            <?php foreach($users as $u): ?>
+                    <?php if ($u['ID'] == $p['User_ID']): ?>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                            <?php echo "Posted By: ".$u['Username']. "<br>\n" ."Role: ".$u['Role']; ?>
+                            <h3><?= htmlspecialchars($p['Title']) ?></h3>
+                            <p><?= nl2br(htmlspecialchars($p['Content'])) ?></p>
+                            <small class="text-muted"><?= $p['Created_at'] ?></small><br>
+                            <div style="margin-top:8px;">
+                                <form action="delete.php" method="POST" style="display:inline;">
+                                    <input type="hidden" name="ID" value="<?= $p['ID'] ?>">
+                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Delete this Post?');">Delete</button>
+                                </form>
+                                <a class="btn3" href="edit.php?ID=<?= $p["ID"] ?>">Edit</a>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
         <?php endforeach; ?>
         <div class="my-pigmentation-container">
             <nav aria-label="Page navigation">
                 <ul class = "pagination">
-                    <div style="padding: 20px; margin: 20px; position: relative; top: 50px;">
+                    <div style="padding: 20px; margin: 50px; position: relative; top: 50px;">
                         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                             <a href="?page=<?= $i ?>" style="display: inline-block; padding: 10px; margin: 5px; background: violet; color: black; text-decoration: none; font-size: 20px; font-weight: bold; border: none;">
                                 <?= $i ?>

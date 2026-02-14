@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $error = "Title and Content are required!";
     else
     {
-        $stmt = $conn->prepare("insert into posts (title,content) values (?,?)");
+        $stmt = $conn->prepare("insert into posts (Title,Content) values (?,?)");
         $stmt->bind_param("ss", $title,$content);
         $stmt->execute();
         header("Location: index.php");
