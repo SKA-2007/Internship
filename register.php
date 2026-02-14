@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             </div>        
             <div class="form-group">
                 <label>Password:</label>
-                <input type="password" class="form-control" name="password" minlength="6" id="pass" onblur="checkPass()">
+                <input type="password" class="form-control" name="password" minlength="8" id="pass" onblur="checkPass()">
                 <span class="text-danger"><?php if(!empty($p_error)) echo $p_error?></span>
                 <span class="text-danger" id="p_error"></span>
             </div>

@@ -2,12 +2,15 @@
 require 'config.php';
 require_login();
 $error = "";
-if ($_SERVER["REQUEST_METHOD"] == "POST")
+$v_error = 0;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && $v_error == 0)
 {
     $title = trim($_POST['Title'] ?? '');
     $content = trim($_POST['Content'] ?? '');
-    if ($title === "" || $content === "")
-        $error = "Title and Content are required!";
+    if ($title === "" || $content === ""){
+        $t_error = "This field can't be left empty.";
+        $v_error = 1;
+    }
     else
     {
         $stmt = $conn->prepare("insert into posts (Title,Content) values (?,?)");
@@ -128,6 +131,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         .btn2:hover{
             opacity: .7;
         }
+        .text-danger{
+            color: darkred;
+            position: relative;
+            bottom: 15px;
+        }
     </style>
 </head>
 
@@ -144,14 +152,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         <form method="POST">
             <div class="form-group">
                 <label>Title</label>
-                <input class="form-control" type="text" name="Title" required>
+                <input class="form-control" type="text" name="Title" minlength="6" id="title" onblur="checkTitle()">
+                <span class="text-danger"><?php if(!empty($t_error)) echo $t_error?></span>
+                <span class="text-danger" id="t_error"></span>
             </div>
             <div class="form-group">
                 <label>Content</label>
-                <textarea class="form-control1" name="Content" rows="8" required></textarea>
+                <textarea class="form-control1" name="Content" rows="8" minlength="20" id="content" onblur="checkContent()"></textarea>
+                <span class="text-danger"><?php if(!empty($t_error)) echo $t_error?></span>
+                <span class="text-danger" id="c_error"></span>
             </div>
             <button class="btn btn-primary" type="submit">Save</button>
         </form>
+        <script>
+            function checkTitle() {
+                var user = document.getElementById("title").value;
+                var error = document.getElementById("t_error");
+                if (user.length < 6) {
+                    error.textContent = "The Title Must be Atleast 6 Characters.";
+                    return false;
+                }
+                error.textContent = "";
+                return true;
+            }
+            function checkContent() {
+                var user = document.getElementById("content").value;
+                var error = document.getElementById("c_error");
+                if (user.length < 20) {
+                    error.textContent = "The Content Must be Atleast 20 Chracters.";
+                    return false;
+                }
+                error.textContent = "";
+                return true;
+            }
+        </script>
     </div>
 </body>
 
